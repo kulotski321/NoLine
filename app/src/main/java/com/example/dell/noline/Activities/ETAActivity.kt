@@ -36,7 +36,7 @@ class ETAActivity: AppCompatActivity() {
 
     public override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_eta)
+        setContentView(R.layout.activity_eta_new)
         client = OkHttpClient()
         val message = intent.getStringExtra("message")
         val timeJoined = intent.getStringExtra("timeJoined")
@@ -93,7 +93,7 @@ class ETAActivity: AppCompatActivity() {
                 }.show()
             }
         }
-        line_up_btn.setOnClickListener {
+        /*line_up_btn.setOnClickListener {
             runOnUiThread {
                 alert ("This will add you in the queue"){
                     title = "Queue again?"
@@ -103,7 +103,7 @@ class ETAActivity: AppCompatActivity() {
                     negativeButton("Cancel"){}
                 }.show()
             }
-        }
+        }*/
 
     }
     private fun convertDateTimeAndDisplay(waitingTime: String){
@@ -233,38 +233,15 @@ class ETAActivity: AppCompatActivity() {
     private fun reserveTransaction(uuid: String){
         transactionInterface.reserveTransaction(uuid).enqueue(object: Callback<ResultQR>{
             override fun onFailure(call: Call<ResultQR>?, t: Throwable?) {
+                longToast("Check your internet connection")
             }
 
             override fun onResponse(call: Call<ResultQR>?, response: retrofit2.Response<ResultQR>?) {
                 if(response!!.isSuccessful){
                     val result = response.body()
                     if(result.message == "successfully reserved"){
-                        longToast("you are now reserved")
-                    }
-                }
-            }
-        })
-    }
+                        longToast("You are now reserved")
 
-    private fun joinQueue(uuid: String){
-        transactionInterface.joinQueue(uuid).enqueue(object: Callback<ResultQR>{
-            override fun onFailure(call: Call<ResultQR>?, t: Throwable?) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-            }
-
-            override fun onResponse(call: Call<ResultQR>?, response: retrofit2.Response<ResultQR>?) {
-                if(response!!.isSuccessful){
-                    val result = response.body()
-                    Log.e("result",result.toString())
-                    if(result.message == "successfully lined up"){
-                        longToast("Successfully lined up")
-                        runOnUiThread {
-                            changeCurrentServe(result.currentServed)
-                            convertDateTimeAndDisplay(result.waitingTime)
-                            priorityTV.text = result.priorityNumber
-                        }
-                    }else if(result.message == "no available tellers"){
-                        longToast("No available tellers")
                     }
                 }
             }

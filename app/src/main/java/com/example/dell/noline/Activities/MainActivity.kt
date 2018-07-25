@@ -45,6 +45,10 @@ class MainActivity : AppCompatActivity() {
             val i = Intent(this@MainActivity, ReserveActivity::class.java)
             startActivity(i)
         }
+        new_eta_btn!!.setOnClickListener {
+            val i = Intent(this@MainActivity, ETAActivity::class.java)
+            startActivity(i)
+        }
 
     }
     private fun checkAndRequestPermissions(): Boolean {
@@ -86,19 +90,12 @@ class MainActivity : AppCompatActivity() {
                 if (grantResults.isNotEmpty()) {
                     for (i in permissions.indices)
                         perms[permissions[i]] = grantResults[i]
-                    // Check for both permissions
                     if (perms[Manifest.permission.CAMERA] == PackageManager.PERMISSION_GRANTED
                             && perms[Manifest.permission.WRITE_EXTERNAL_STORAGE] == PackageManager.PERMISSION_GRANTED
                             && perms[Manifest.permission.ACCESS_FINE_LOCATION] == PackageManager.PERMISSION_GRANTED) {
                         Log.d(TAG, "sms & location services permission granted")
-                        // process the normal flow
-
-                        //else any one or both the permissions are not granted
                     } else {
                         Log.d(TAG, "Some permissions are not granted ask again ")
-                        //permission is denied (this is the first time, when "never ask again" is not checked) so ask again explaining the usage of permission
-                        //                        // shouldShowRequestPermissionRationale will return true
-                        //show the dialog or snackbar saying its necessary and try again otherwise proceed with setup.
                         if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)
                                 || ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                                 || ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
@@ -113,9 +110,7 @@ class MainActivity : AppCompatActivity() {
                                     })
                         } else {
                             explain("You need to give some mandatory permissions to continue. Do you want to go to app settings?")
-                            //                            //proceed with logic by disabling the related features or quit the app.
-                        }//permission is denied (and never ask again is  checked)
-                        //shouldShowRequestPermissionRationale will return false
+                        }
                     }
                 }
             }

@@ -38,7 +38,7 @@ class ScanActivity: AppCompatActivity(), ZXingScannerView.ResultHandler {
     }
 
     override fun handleResult(p0: Result?) {
-        MainActivity.qrResult!!.text = p0?.text
+        //MainActivity.qrResult!!.text = p0?.text
         authenticate(p0?.text.toString())
         onBackPressed()
     }
