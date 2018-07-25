@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="dateColor"> #1a75ff</color>
+    <color name="timeColor">#0066ff</color>
+    <color name="white">#FFFFFF</color>
+    <color name="text_color1">#0277BD</color>
+    <color name="header_color1">#2D9CDB</color>
+    <color name="text_color2">#4F4F4F</color>
+    <color name="header_color2">#EB5757</color>
+    <color name="header_color3">#FF6C6C</color>
+</resources>
