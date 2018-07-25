@@ -68,7 +68,17 @@ class ScanActivity: AppCompatActivity(), ZXingScannerView.ResultHandler {
                         result.message == "you are in reserved" -> {
                             longToast("You are in reserved")
                             // go to reserve mode
-
+                            val i = Intent(this@ScanActivity, ReserveActivity::class.java)
+                            i.putExtra("message", result.message)
+                            i.putExtra("uuid", result.uuid)
+                            i.putExtra("timeJoined", result.timeJoined)
+                            i.putExtra("waitingTime", result.waitingTime)
+                            i.putExtra("priorityNumber", result.priorityNumber)
+                            i.putExtra("currentServed", result.currentServed)
+                            i.putExtra("serviceId", result.serviceId)
+                            i.putExtra("serviceName", result.serviceName)
+                            i.putExtra("companyName", result.companyName)
+                            startActivity(i)
                         }
                         result.message == "no available tellers" -> {
                             longToast("No available tellers")
@@ -86,7 +96,7 @@ class ScanActivity: AppCompatActivity(), ZXingScannerView.ResultHandler {
                             i.putExtra("companyName", result.companyName)
                             startActivity(i)
                             Log.e(ContentValues.TAG,result.toString())
-                            toast("QR code successfully scanned")
+                            longToast("QR code scanned successfully")
                         }
                     }
                 }

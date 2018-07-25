@@ -22,7 +22,7 @@
             tools:fontFamily="@font/roboto_light" />
 
         <TextView
-            android:id="@+id/companyTV"
+            android:id="@+id/companyTV1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
@@ -40,14 +40,14 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/companyTV"
+            android:layout_below="@+id/companyTV1"
             android:text="@string/service_name"
             android:textAlignment="center"
             android:textSize="16sp"
             tools:fontFamily="@font/roboto_light" />
 
         <TextView
-            android:id="@+id/serviceTV"
+            android:id="@+id/serviceTV1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
@@ -107,7 +107,7 @@
             android:layout_alignParentLeft="true" />
 
         <TextView
-            android:id="@+id/dateTV"
+            android:id="@+id/dateTV1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/textView10"
@@ -116,18 +116,20 @@
             android:textAlignment="center"
             android:textColor="@color/header_color3"
             android:textSize="20sp"
+            android:textStyle="bold"
             tools:fontFamily="@font/rubik_bold"
             android:layout_alignParentLeft="true" />
 
         <TextView
-            android:id="@+id/timeTV"
+            android:id="@+id/timeTV1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/dateTV"
+            android:layout_below="@+id/dateTV1"
             android:text="@string/loading"
             android:textAlignment="center"
             android:textColor="@color/header_color3"
             android:textSize="24sp"
+            android:textStyle="bold"
             tools:fontFamily="@font/rubik_bold"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
@@ -138,18 +140,18 @@
             android:layout_marginBottom="15dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/timeTV"
+            android:layout_below="@+id/timeTV1"
             app:srcCompat="@drawable/line"
             android:layout_alignParentLeft="true"
             android:contentDescription="TODO"
             android:layout_alignParentStart="true" />
 
         <Button
-            android:id="@+id/line_up_btn"
+            android:id="@+id/line_up_btn1"
             android:layout_width="147dp"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_alignTop="@+id/cancel_btn"
+            android:layout_alignTop="@+id/cancel_btn1"
             android:layout_marginEnd="14dp"
             android:background="@drawable/round_eta"
             android:text="@string/line_up"
@@ -159,7 +161,7 @@
             android:layout_marginRight="14dp" />
 
         <Button
-            android:id="@+id/cancel_btn"
+            android:id="@+id/cancel_btn1"
             android:layout_width="147dp"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"

@@ -148,9 +148,10 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:layout_weight="1">
+
                 <TextView
                     android:id="@+id/tv1"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:text="@string/we_are_currently_serving"
@@ -160,15 +161,16 @@
 
                 <TextView
                     android:id="@+id/currentTV"
-                    android:layout_width="203dp"
-                    android:layout_height="58dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
                     android:text="@string/loading"
                     android:textAlignment="center"
                     android:textColor="@color/timeColor"
                     android:textSize="30sp"
                     android:textStyle="bold"
                     tools:fontFamily="@font/roboto"
-                    android:layout_alignParentRight="true" />
+                    android:layout_alignParentEnd="true" />
             </LinearLayout>
         </LinearLayout>
 
