@@ -63,12 +63,12 @@
 
         <ImageView
             android:id="@+id/imageView3"
-            android:layout_width="360dp"
-            android:layout_height="5dp"
+            android:layout_width="340dp"
+            android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="141dp"
-            app:srcCompat="@drawable/dotted" />
+            app:srcCompat="@drawable/line" />
 
 
         <TextView
@@ -173,12 +173,11 @@
 
         <ImageView
             android:id="@+id/line4"
-            android:layout_width="360dp"
-            android:layout_height="5dp"
-            android:layout_alignParentBottom="true"
+            android:layout_width="340dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/linear_layout1"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="153dp"
-            app:srcCompat="@drawable/dotted" />
+            app:srcCompat="@drawable/line" />
 
         <Button
             android:id="@+id/pause_btn"

@@ -40,7 +40,10 @@ class MainActivity : AppCompatActivity() {
             }
         }
         // during ETAActivity if no internet -> not responding
-
+        manual_btn!!.setOnClickListener {
+            val i = Intent(this@MainActivity, ManualActivity::class.java)
+            startActivity(i)
+        }
 
     }
     private fun checkAndRequestPermissions(): Boolean {

@@ -37,4 +37,7 @@
     <string name="the_rest">the rest of your waiting time</string>
     <string name="or">or</string>
     <string name="manually_input_your">Manually input your unique NoLine code</string>
+    <!-- Manual Activity -->
+    <string name="input_your_unique">Input your unique NoLine code</string>
+    <string name="enter">Enter</string>
 </resources>

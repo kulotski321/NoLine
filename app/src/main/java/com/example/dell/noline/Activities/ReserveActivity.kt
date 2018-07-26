@@ -63,6 +63,7 @@ class ReserveActivity: AppCompatActivity (){
                 alert ("This will add you in the queue"){
                     title = "Queue again?"
                     positiveButton("Proceed"){
+                         listener.onClosing(ws, ETAActivity.NORMAL_CLOSURE_STATUS, "nothing")
                          joinQueue(uuid)
                     }
                     negativeButton("Cancel"){}
@@ -75,6 +76,7 @@ class ReserveActivity: AppCompatActivity (){
                 alert ("This will stop your current queue"){
                     title = "Cancel Queue"
                     positiveButton("Proceed"){
+                        listener.onClosing(ws, ETAActivity.NORMAL_CLOSURE_STATUS, "nothing")
                         cancelTransaction(uuid)
                     }
                     negativeButton("Cancel"){}
@@ -93,7 +95,6 @@ class ReserveActivity: AppCompatActivity (){
                     val result = response.body()
                     Log.e("result",result.toString())
                     if(result.message == "successfully lined up"){
-                        listener.onClosing(ws, ETAActivity.NORMAL_CLOSURE_STATUS, "nothing")
                         longToast("Successfully lined up")
                         val i = Intent(this@ReserveActivity, ETAActivity::class.java)
                         i.putExtra("message", result.message)
@@ -125,7 +126,6 @@ class ReserveActivity: AppCompatActivity (){
                     val result = response.body()
                     if(result.message == "successfully cancelled"){
                         val i = Intent(this@ReserveActivity, MainActivity::class.java)
-                        listener.onClosing(ws, ETAActivity.NORMAL_CLOSURE_STATUS, "nothing")
                         startActivity(i)
                         finish()
                     }

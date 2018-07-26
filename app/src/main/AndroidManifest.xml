@@ -41,7 +41,9 @@
         <activity android:name=".Activities.ReserveActivity"
             android:parentActivityName=".Activities.ETAActivity"
             android:label="@string/reserve_activity"/>
-
+        <activity android:name=".Activities.ManualActivity"
+            android:parentActivityName=".Activities.MainActivity"
+            android:label="@string/manual_activity"/>
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />

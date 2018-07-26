@@ -70,6 +70,7 @@ class ETAActivity: AppCompatActivity() {
                 alert ("This will stop your current queue"){
                     title = "Cancel Queue"
                     positiveButton("Proceed"){
+                        listener.onClosing(ws, NORMAL_CLOSURE_STATUS, "nothing")
                         cancelTransaction(uuid)
                     }
                     negativeButton("Cancel"){}
@@ -82,6 +83,7 @@ class ETAActivity: AppCompatActivity() {
                         "queue back and get another ETA"){
                     title = "Pause Queue"
                     positiveButton("Proceed"){
+                        listener.onClosing(ws, NORMAL_CLOSURE_STATUS, "nothing")
                         reserveTransaction(uuid)
                     }
                     negativeButton("Cancel"){}
@@ -160,9 +162,9 @@ class ETAActivity: AppCompatActivity() {
                         alert("Get another ticket huhuhu :("){
                             title = "Sorry, you have been skipped"
                             positiveButton("Okay"){
+                                listener.onClosing(ws, NORMAL_CLOSURE_STATUS, "nothing")
                                 val j = Intent(this@ETAActivity, MainActivity::class.java)
                                 startActivity(j)
-                                listener.onClosing(ws, NORMAL_CLOSURE_STATUS, "nothing")
                                 finish()
                             }
                         }.show()
@@ -207,7 +209,6 @@ class ETAActivity: AppCompatActivity() {
                     val result = response.body()
                     if(result.message == "successfully cancelled"){
                         val i = Intent(this@ETAActivity, MainActivity::class.java)
-                        listener.onClosing(ws, NORMAL_CLOSURE_STATUS, "nothing")
                         startActivity(i)
                         finish()
                     }
@@ -268,7 +269,6 @@ class ETAActivity: AppCompatActivity() {
                             i.putExtra("serviceId", result.serviceId)
                             i.putExtra("serviceName", result.serviceName)
                             i.putExtra("companyName", result.companyName)
-                            listener.onClosing(ws, NORMAL_CLOSURE_STATUS, "nothing")
                             startActivity(i)
                             finish()
                         }
