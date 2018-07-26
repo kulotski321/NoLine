@@ -18,6 +18,7 @@
     <string name="company_name">Company Name</string>
     <string name="cancel">Cancel</string>
     <string name="pause">Pause</string>
+    <string name="back_to_menu">Back to menu</string>
     <string name="line_up">Line up</string>
     <string name="you_will_be_served_at">You will be served at</string>
     <string name="we_are_currently_serving">We are currently serving</string>

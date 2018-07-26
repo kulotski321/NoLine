@@ -2,6 +2,7 @@ package com.example.dell.noline.Activities
 
 import android.content.ContentValues
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
@@ -9,6 +10,7 @@ import com.example.dell.noline.Data.ResultQR
 import com.example.dell.noline.Interfaces.TransactionInterface
 import com.example.dell.noline.R
 import com.example.dell.noline.Utils.ApiUtils
+import com.example.dell.noline.Utils.Device
 import kotlinx.android.synthetic.main.activity_manual.*
 import org.jetbrains.anko.longToast
 import retrofit2.Call
@@ -18,7 +20,6 @@ import retrofit2.Response
 class ManualActivity: AppCompatActivity() {
 
     private var transactionInterface: TransactionInterface = ApiUtils.apiTransaction
-
     public override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_manual)
@@ -26,15 +27,15 @@ class ManualActivity: AppCompatActivity() {
         enter_btn!!.setOnClickListener {
             val code: String = noline_code.text.toString()
             if(code.isNotEmpty()){
-                authenticate(code)
+                authenticate(code, Device.code)
             }else{
                 noline_code.error = "Please enter your code"
             }
         }
     }
 
-    private fun authenticate(uuid: String){
-        transactionInterface.authenticateTransaction(uuid).enqueue(object: Callback<ResultQR> {
+    private fun authenticate(uuid: String, mac: String){
+        transactionInterface.authenticateTransaction(uuid, mac).enqueue(object: Callback<ResultQR> {
             override fun onFailure(call: Call<ResultQR>?, t: Throwable?) {
                 longToast("Check your internet connection")
             }
@@ -87,6 +88,9 @@ class ManualActivity: AppCompatActivity() {
                             startActivity(i)
                             Log.e(ContentValues.TAG,result.toString())
                             longToast("QR code scanned successfully")
+                        }
+                        result.message == "not your device" -> {
+                            longToast("This QR code is linked to another device")
                         }
                     }
                 }

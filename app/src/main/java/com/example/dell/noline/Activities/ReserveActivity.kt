@@ -2,6 +2,7 @@ package com.example.dell.noline.Activities
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import com.beust.klaxon.Klaxon
@@ -20,7 +21,7 @@ import retrofit2.Callback
 import java.text.DateFormat
 import java.util.*
 import org.jetbrains.anko.alert
-import org.jetbrains.anko.longToast
+import org.jetbrains.anko.toast
 
 class ReserveActivity: AppCompatActivity (){
     private var dateFormat = DateFormat.getDateTimeInstance()
@@ -31,6 +32,8 @@ class ReserveActivity: AppCompatActivity (){
     lateinit var client: OkHttpClient
     lateinit var listener : EchoWebSocketListener
     lateinit var ws: WebSocket
+    private var doubleBackToExitPressedOnce = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_reserve)
@@ -151,7 +154,7 @@ class ReserveActivity: AppCompatActivity (){
 
         val dateTimeFinal = dateFormat.format(dateTime.time)
         val date = dateTimeFinal.substring(0,12)
-        var time = dateTimeFinal.substring(13,21)
+        var time = dateTimeFinal.substring(13,18)
 
         val num = hour.toInt()
         time += if(num in 0..12){
@@ -184,7 +187,6 @@ class ReserveActivity: AppCompatActivity (){
                     convertDateTimeAndDisplay(result.newETA)
                 }
                 result.message == "user turn" -> {
-
                 }
                 result.message == "user skip" -> {
 
@@ -216,5 +218,16 @@ class ReserveActivity: AppCompatActivity (){
         listener = EchoWebSocketListener()
         ws = client.newWebSocket(request, listener)
         client.dispatcher().executorService().shutdown()
+    }
+
+    override fun onBackPressed() {
+        if (doubleBackToExitPressedOnce) {
+            this.moveTaskToBack(true);
+            return
+        }
+
+        this.doubleBackToExitPressedOnce = true
+        toast("Please press BACK again to exit")
+        Handler().postDelayed(Runnable { doubleBackToExitPressedOnce = false }, 2000)
     }
 }

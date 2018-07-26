@@ -13,7 +13,8 @@ interface TransactionInterface {
 
     @FormUrlEncoded
     @POST("/transaction/authenticate/")
-    fun authenticateTransaction(@Field("uuid") uuid: String) : Call<ResultQR>
+    fun authenticateTransaction(@Field("uuid") uuid: String,
+                                @Field("mac") deviceCode: String) : Call<ResultQR>
 
     @FormUrlEncoded
     @POST("/transaction/cancel/")

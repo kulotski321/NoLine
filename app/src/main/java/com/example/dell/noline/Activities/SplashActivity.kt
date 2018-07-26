@@ -7,7 +7,7 @@ import com.example.dell.noline.R
 
 class SplashActivity : AppCompatActivity(){
     private var delayHandler: Handler? = null
-    private val delay: Long = 3000 //2.5 seconds
+    private val delay: Long = 3000 // 3 seconds
 
     private val runnable: Runnable = Runnable {
         if (!isFinishing) {

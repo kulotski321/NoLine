@@ -2,6 +2,8 @@ package com.example.dell.noline.Activities
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.ContentValues
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
@@ -19,15 +21,27 @@ import java.util.ArrayList
 import java.util.HashMap
 import android.os.Handler
 import kotlinx.android.synthetic.main.activity_main.*
+import android.os.Build
+import com.example.dell.noline.Data.ResultQR
+import com.example.dell.noline.Interfaces.TransactionInterface
+import com.example.dell.noline.Utils.ApiUtils
+import com.example.dell.noline.Utils.Device
+import org.jetbrains.anko.longToast
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+
 
 class MainActivity : AppCompatActivity() {
     private var btn: Button? =null
     private val TAG = "tag"
+    private var transactionInterface: TransactionInterface = ApiUtils.apiTransaction
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
+        // longToast(Device.code)
+        authenticate("", Device.code)
         btn = findViewById<Button>(R.id.scan) as Button
 
         btn!!.setOnClickListener {
@@ -40,10 +54,13 @@ class MainActivity : AppCompatActivity() {
             }
         }
         // during ETAActivity if no internet -> not responding
+
         manual_btn!!.setOnClickListener {
             val i = Intent(this@MainActivity, ManualActivity::class.java)
             startActivity(i)
         }
+
+        /// compute always for deviceCode
 
     }
     private fun checkAndRequestPermissions(): Boolean {
@@ -139,5 +156,82 @@ class MainActivity : AppCompatActivity() {
         var qrResult: TextView?=null
         const val REQUEST_ID_MULTIPLE_PERMISSIONS = 1
         private const val SPLASH_TIME_OUT = 2000
+    }
+
+    private fun authenticate(uuid: String, mac: String){
+        transactionInterface.authenticateTransaction(uuid, mac).enqueue(object: Callback<ResultQR> {
+            override fun onFailure(call: Call<ResultQR>?, t: Throwable?) {
+                longToast("Check your internet connection")
+            }
+
+            override fun onResponse(call: Call<ResultQR>?, response: Response<ResultQR>?) {
+                if(response!!.isSuccessful){
+                    val result = response.body()
+                    when {
+                        result.message == "not a valid customer" -> {
+                            // longToast("Please scan a valid QR code")
+                        }
+                        result.message == "it is your turn" -> {
+                            longToast("It is your turn")
+                            val i = Intent(this@MainActivity, ETAActivity::class.java)
+                            i.putExtra("message", result.message)
+                            i.putExtra("uuid", result.uuid)
+                            i.putExtra("timeJoined", result.timeJoined)
+                            i.putExtra("waitingTime", result.waitingTime)
+                            i.putExtra("priorityNumber", result.priorityNumber)
+                            i.putExtra("currentServed", result.currentServed)
+                            i.putExtra("serviceId", result.serviceId)
+                            i.putExtra("serviceName", result.serviceName)
+                            i.putExtra("companyName", result.companyName)
+                            i.putExtra("teller_no", result.teller)
+                            startActivity(i)
+                        }
+                        result.message == "you have been skipped" -> {
+                            longToast("You have been skipped")
+                        }
+                        result.message == "your transaction is already complete" -> {
+                            longToast("Your transaction is already complete")
+                        }
+                        result.message == "you are in reserved" -> {
+                            longToast("You are in reserved")
+                            // go to reserve mode
+                            val i = Intent(this@MainActivity, ReserveActivity::class.java)
+                            i.putExtra("message", result.message)
+                            i.putExtra("uuid", result.uuid)
+                            i.putExtra("timeJoined", result.timeJoined)
+                            i.putExtra("waitingTime", result.waitingTime)
+                            i.putExtra("priorityNumber", result.priorityNumber)
+                            i.putExtra("currentServed", result.currentServed)
+                            i.putExtra("serviceId", result.serviceId)
+                            i.putExtra("serviceName", result.serviceName)
+                            i.putExtra("companyName", result.companyName)
+                            startActivity(i)
+                        }
+                        result.message == "no available tellers" -> {
+                            longToast("No available tellers")
+                        }
+                        result.message == "successfully logged in" -> {
+                            val i = Intent(this@MainActivity, ETAActivity::class.java)
+                            i.putExtra("message", result.message)
+                            i.putExtra("uuid", result.uuid)
+                            i.putExtra("timeJoined", result.timeJoined)
+                            i.putExtra("waitingTime", result.waitingTime)
+                            i.putExtra("priorityNumber", result.priorityNumber)
+                            i.putExtra("currentServed", result.currentServed)
+                            i.putExtra("serviceId", result.serviceId)
+                            i.putExtra("serviceName", result.serviceName)
+                            i.putExtra("companyName", result.companyName)
+                            startActivity(i)
+                            Log.e(ContentValues.TAG,result.toString())
+                            longToast("QR code scanned successfully")
+                        }
+                        result.message == "not your device" -> {
+                            longToast("This QR code is linked to another device")
+                        }
+                    }
+                }
+            }
+
+        })
     }
 }

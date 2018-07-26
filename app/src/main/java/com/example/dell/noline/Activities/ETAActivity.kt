@@ -2,9 +2,12 @@ package com.example.dell.noline.Activities
 
 import android.content.ContentValues
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
+import android.view.View
 import com.beust.klaxon.Klaxon
 import com.example.dell.noline.Data.Message
 import com.example.dell.noline.Data.NewETA
@@ -14,6 +17,7 @@ import com.example.dell.noline.R
 import java.text.DateFormat
 import java.util.*
 import com.example.dell.noline.Utils.ApiUtils
+import com.example.dell.noline.Utils.Device
 import kotlinx.android.synthetic.main.activity_eta_new.*
 import okio.ByteString
 import okhttp3.OkHttpClient
@@ -23,6 +27,7 @@ import okhttp3.WebSocket
 import okhttp3.WebSocketListener
 import org.jetbrains.anko.alert
 import org.jetbrains.anko.longToast
+import org.jetbrains.anko.toast
 import retrofit2.Call
 import retrofit2.Callback
 
@@ -36,6 +41,7 @@ class ETAActivity: AppCompatActivity() {
     lateinit var listener : EchoWebSocketListener
     lateinit var ws: WebSocket
     private var transactionInterface: TransactionInterface = ApiUtils.apiTransaction
+    private var doubleBackToExitPressedOnce = false
 
     public override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
@@ -51,6 +57,19 @@ class ETAActivity: AppCompatActivity() {
         val serviceId = intent.getStringExtra("serviceId")
         val serviceName = intent.getStringExtra("serviceName")
         val companyName = intent.getStringExtra("companyName")
+        if(!intent.getStringExtra("teller_no").isNullOrBlank()){
+            val teller = intent.getStringExtra("teller_no")
+            runOnUiThread {
+                alert("Please present this queue ticket to teller " +
+                        teller){
+                    title = "It's your turn"
+                    positiveButton("Okay"){}
+                }.show()
+            }
+            cancel_btn.visibility = View.INVISIBLE
+            pause_btn.visibility = View.INVISIBLE
+            back_btn.visibility = View.VISIBLE
+        }
         val authToken = "uuid%20$uuid"
 
         // for websocket uri
@@ -90,6 +109,12 @@ class ETAActivity: AppCompatActivity() {
                 }.show()
             }
         }
+        back_btn.setOnClickListener {
+            listener.onClosing(ws, NORMAL_CLOSURE_STATUS, "nothing")
+            val i = Intent(this@ETAActivity, MainActivity::class.java)
+            startActivity(i)
+            finish()
+        }
 
     }
     private fun convertDateTimeAndDisplay(waitingTime: String){
@@ -109,7 +134,7 @@ class ETAActivity: AppCompatActivity() {
 
         val dateTimeFinal = dateFormat.format(dateTime.time)
         val date = dateTimeFinal.substring(0,12)
-        var time = dateTimeFinal.substring(13,21)
+        var time = dateTimeFinal.substring(13,18)
 
         val num = hour.toInt()
         time += if(num in 0..12){
@@ -117,6 +142,7 @@ class ETAActivity: AppCompatActivity() {
         }else{
             "PM"
         }
+
         // Display into screen
         runOnUiThread {
             dateTV.text = date
@@ -155,11 +181,14 @@ class ETAActivity: AppCompatActivity() {
                             title = "It's your turn"
                             positiveButton("Okay"){}
                         }.show()
+                        cancel_btn.visibility = View.INVISIBLE
+                        pause_btn.visibility = View.INVISIBLE
+                        back_btn.visibility = View.VISIBLE
                     }
                 }
                 result?.message == "user skip" -> {
                     runOnUiThread {
-                        alert("Get another ticket huhuhu :("){
+                        alert("Your ticket have been skipped due to your absence"){
                             title = "Sorry, you have been skipped"
                             positiveButton("Okay"){
                                 listener.onClosing(ws, NORMAL_CLOSURE_STATUS, "nothing")
@@ -228,14 +257,14 @@ class ETAActivity: AppCompatActivity() {
                     val result = response.body()
                     if(result.message == "successfully reserved"){
                         longToast("You are now in reserved queue")
-                        authenticate(uuid)
+                        authenticate(uuid, Device.code)
                     }
                 }
             }
         })
     }
-    private fun authenticate(uuid: String){
-        transactionInterface.authenticateTransaction(uuid).enqueue(object: Callback<ResultQR> {
+    private fun authenticate(uuid: String, mac: String){
+        transactionInterface.authenticateTransaction(uuid, mac).enqueue(object: Callback<ResultQR> {
             override fun onFailure(call: Call<ResultQR>?, t: Throwable?) {
                 longToast("Check your internet connection")
             }
@@ -249,6 +278,9 @@ class ETAActivity: AppCompatActivity() {
                         }
                         result.message == "it is your turn" -> {
                             longToast("It is your turn")
+                            cancel_btn.visibility = View.INVISIBLE
+                            pause_btn.visibility = View.INVISIBLE
+                            back_btn.visibility = View.VISIBLE
                         }
                         result.message == "you have been skipped" -> {
                             longToast("You have been skipped")
@@ -277,10 +309,24 @@ class ETAActivity: AppCompatActivity() {
                         }
                         result.message == "successfully logged in" -> {
                         }
+                        result.message == "not your device" -> {
+                            longToast("This QR code is linked to another device")
+                        }
                     }
                 }
             }
 
         })
+    }
+
+    override fun onBackPressed() {
+        if (doubleBackToExitPressedOnce) {
+            this.moveTaskToBack(true);
+            return
+        }
+
+        this.doubleBackToExitPressedOnce = true
+        toast("Please press BACK again to exit")
+        Handler().postDelayed(Runnable { doubleBackToExitPressedOnce = false }, 2000)
     }
 }

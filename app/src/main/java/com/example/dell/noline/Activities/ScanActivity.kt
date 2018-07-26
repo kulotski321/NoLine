@@ -2,12 +2,14 @@ package com.example.dell.noline.Activities
 
 import android.content.ContentValues
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import com.example.dell.noline.Data.ResultQR
 import com.example.dell.noline.Interfaces.TransactionInterface
 import com.example.dell.noline.Utils.ApiUtils
+import com.example.dell.noline.Utils.Device
 import com.google.zxing.Result
 import me.dm7.barcodescanner.zxing.ZXingScannerView
 import org.jetbrains.anko.longToast
@@ -19,11 +21,12 @@ import retrofit2.Response
 class ScanActivity: AppCompatActivity(), ZXingScannerView.ResultHandler {
     private var mScannerView : ZXingScannerView ?= null
     private var transactionInterface: TransactionInterface = ApiUtils.apiTransaction
-
     public override fun onCreate(state: Bundle?){
         super.onCreate(state)
         mScannerView = ZXingScannerView(this)
         setContentView(mScannerView)
+
+
     }
 
     public override fun onResume(){
@@ -39,12 +42,12 @@ class ScanActivity: AppCompatActivity(), ZXingScannerView.ResultHandler {
 
     override fun handleResult(p0: Result?) {
         //MainActivity.qrResult!!.text = p0?.text
-        authenticate(p0?.text.toString())
+        authenticate(p0?.text.toString(), Device.code)
         onBackPressed()
     }
 
-    private fun authenticate(uuid: String){
-        transactionInterface.authenticateTransaction(uuid).enqueue(object: Callback<ResultQR> {
+    private fun authenticate(uuid: String, mac: String){
+        transactionInterface.authenticateTransaction(uuid, mac).enqueue(object: Callback<ResultQR> {
             override fun onFailure(call: Call<ResultQR>?, t: Throwable?) {
                 longToast("Check your internet connection")
             }
@@ -54,13 +57,25 @@ class ScanActivity: AppCompatActivity(), ZXingScannerView.ResultHandler {
                     val result = response.body()
                     when {
                         result.message == "not a valid customer" -> {
-                            longToast("Please scan a valid QR code")
+                            longToast("Please input a valid QR code")
                         }
                         result.message == "it is your turn" -> {
                             longToast("It is your turn")
+                            val i = Intent(this@ScanActivity, ETAActivity::class.java)
+                            i.putExtra("message", result.message)
+                            i.putExtra("uuid", result.uuid)
+                            i.putExtra("timeJoined", result.timeJoined)
+                            i.putExtra("waitingTime", result.waitingTime)
+                            i.putExtra("priorityNumber", result.priorityNumber)
+                            i.putExtra("currentServed", result.currentServed)
+                            i.putExtra("serviceId", result.serviceId)
+                            i.putExtra("serviceName", result.serviceName)
+                            i.putExtra("companyName", result.companyName)
+                            i.putExtra("teller_no", result.teller)
+                            startActivity(i)
                         }
                         result.message == "you have been skipped" -> {
-                            longToast("You have been skipped")
+                            longToast("Sorry, this ticket have been skipped")
                         }
                         result.message == "your transaction is already complete" -> {
                             longToast("Your transaction is already complete")
@@ -97,6 +112,12 @@ class ScanActivity: AppCompatActivity(), ZXingScannerView.ResultHandler {
                             startActivity(i)
                             Log.e(ContentValues.TAG,result.toString())
                             longToast("QR code scanned successfully")
+                        }
+                        result.message == "not your device" -> {
+                            longToast("This QR code is linked to another device")
+                        }
+                        result.message == "not unique" -> {
+                            longToast("You already have a linked QR code ")
                         }
                     }
                 }
