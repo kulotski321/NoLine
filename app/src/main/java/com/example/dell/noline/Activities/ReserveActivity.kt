@@ -11,7 +11,6 @@ import com.example.dell.noline.Data.ResultQR
 import com.example.dell.noline.Interfaces.TransactionInterface
 import com.example.dell.noline.R
 import com.example.dell.noline.Utils.ApiUtils
-import kotlinx.android.synthetic.main.activity_eta.*
 import kotlinx.android.synthetic.main.activity_reserve.*
 import okhttp3.*
 import okio.ByteString

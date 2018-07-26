@@ -63,13 +63,12 @@
 
         <ImageView
             android:id="@+id/imageView3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
+            android:layout_width="360dp"
+            android:layout_height="5dp"
             android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
             android:layout_marginTop="141dp"
-            app:srcCompat="@drawable/line" />
+            app:srcCompat="@drawable/dotted" />
 
 
         <TextView
@@ -163,28 +162,23 @@
                     android:id="@+id/currentTV"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
                     android:text="@string/loading"
                     android:textAlignment="center"
                     android:textColor="@color/timeColor"
                     android:textSize="30sp"
                     android:textStyle="bold"
-                    tools:fontFamily="@font/roboto"
-                    android:layout_alignParentEnd="true" />
+                    tools:fontFamily="@font/roboto" />
             </LinearLayout>
         </LinearLayout>
 
         <ImageView
             android:id="@+id/line4"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="15dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/linear_layout1"
-            app:srcCompat="@drawable/line"
-            android:layout_alignParentLeft="true"
-            android:contentDescription="TODO"
-            android:layout_alignParentStart="true" />
+            android:layout_width="360dp"
+            android:layout_height="5dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="153dp"
+            app:srcCompat="@drawable/dotted" />
 
         <Button
             android:id="@+id/pause_btn"

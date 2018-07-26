@@ -11,10 +11,10 @@ import com.example.dell.noline.Data.NewETA
 import com.example.dell.noline.Data.ResultQR
 import com.example.dell.noline.Interfaces.TransactionInterface
 import com.example.dell.noline.R
-import kotlinx.android.synthetic.main.activity_eta.*
 import java.text.DateFormat
 import java.util.*
 import com.example.dell.noline.Utils.ApiUtils
+import kotlinx.android.synthetic.main.activity_eta_new.*
 import okio.ByteString
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -23,7 +23,6 @@ import okhttp3.WebSocket
 import okhttp3.WebSocketListener
 import org.jetbrains.anko.alert
 import org.jetbrains.anko.longToast
-import org.jetbrains.anko.toast
 import retrofit2.Call
 import retrofit2.Callback
 

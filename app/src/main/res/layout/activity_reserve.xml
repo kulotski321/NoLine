@@ -61,13 +61,12 @@
 
         <ImageView
             android:id="@+id/imageView3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
+            android:layout_width="360dp"
+            android:layout_height="5dp"
             android:layout_alignParentTop="true"
-            android:layout_marginTop="141dp"
-            app:srcCompat="@drawable/line" />
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="140dp"
+            app:srcCompat="@drawable/dotted" />
 
         <ImageView
             android:id="@+id/imageView4"
@@ -136,15 +135,12 @@
 
         <ImageView
             android:id="@+id/line4"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="15dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/timeTV1"
-            app:srcCompat="@drawable/line"
-            android:layout_alignParentLeft="true"
-            android:contentDescription="TODO"
-            android:layout_alignParentStart="true" />
+            android:layout_width="360dp"
+            android:layout_height="5dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="161dp"
+            app:srcCompat="@drawable/dotted" />
 
         <Button
             android:id="@+id/line_up_btn1"

@@ -41,14 +41,6 @@ class MainActivity : AppCompatActivity() {
         }
         // during ETAActivity if no internet -> not responding
 
-        reserve_btn!!.setOnClickListener {
-            val i = Intent(this@MainActivity, ReserveActivity::class.java)
-            startActivity(i)
-        }
-        new_eta_btn!!.setOnClickListener {
-            val i = Intent(this@MainActivity, ETAActivity::class.java)
-            startActivity(i)
-        }
 
     }
     private fun checkAndRequestPermissions(): Boolean {
