@@ -3,7 +3,6 @@ package com.example.dell.noline.Activities
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.ContentValues
-import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
@@ -21,7 +20,6 @@ import java.util.ArrayList
 import java.util.HashMap
 import android.os.Handler
 import kotlinx.android.synthetic.main.activity_main.*
-import android.os.Build
 import com.example.dell.noline.Data.ResultQR
 import com.example.dell.noline.Interfaces.TransactionInterface
 import com.example.dell.noline.Utils.ApiUtils
@@ -43,7 +41,6 @@ class MainActivity : AppCompatActivity() {
         // longToast(Device.code)
         authenticate("", Device.code)
         btn = findViewById<Button>(R.id.scan) as Button
-
         btn!!.setOnClickListener {
             if (checkAndRequestPermissions()) {
                 // carry on the normal flow, as the case of  permissions  granted.
@@ -53,14 +50,13 @@ class MainActivity : AppCompatActivity() {
                 }, SPLASH_TIME_OUT.toLong())
             }
         }
-        // during ETAActivity if no internet -> not responding
 
         manual_btn!!.setOnClickListener {
             val i = Intent(this@MainActivity, ManualActivity::class.java)
             startActivity(i)
         }
 
-        /// compute always for deviceCode
+
 
     }
     private fun checkAndRequestPermissions(): Boolean {

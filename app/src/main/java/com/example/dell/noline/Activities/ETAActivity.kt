@@ -196,7 +196,12 @@ class ETAActivity: AppCompatActivity() {
                                 startActivity(j)
                                 finish()
                             }
-                        }.show()
+                        }.show().setOnDismissListener {
+                            listener.onClosing(ws, NORMAL_CLOSURE_STATUS, "nothing")
+                            val j = Intent(this@ETAActivity, MainActivity::class.java)
+                            startActivity(j)
+                            finish()
+                        }
                     }
                 }
             }
