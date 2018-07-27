@@ -124,6 +124,12 @@ class ETAActivity: AppCompatActivity() {
         val hour: String = waitingTime.substring(11, 13)
         val minute: String = waitingTime.substring(14, 16)
         val second: String = waitingTime.substring(17,19)
+        Log.e("year",year)
+        Log.e("month", month)
+        Log.e("day", day)
+        Log.e("hour", hour)
+        Log.e("minute", minute)
+        Log.e("second", second)
 
         dateTime.set(Calendar.YEAR, year.toInt())
         dateTime.set(Calendar.MONTH, month.toInt() - 1)
@@ -133,14 +139,20 @@ class ETAActivity: AppCompatActivity() {
         dateTime.set(Calendar.SECOND, second.toInt())
 
         val dateTimeFinal = dateFormat.format(dateTime.time)
+        Log.e("dateTime", dateTimeFinal)
         val date = dateTimeFinal.substring(0,12)
         var time = dateTimeFinal.substring(13,18)
-
+        // "2018-04-03T06:03:54"
+        Log.e("date", date)
+        Log.e("time", time)
         val num = hour.toInt()
+        if(num in 0..12){
+            time = dateTimeFinal.substring(13,17)
+        }
         time += if(num in 0..12){
-            "AM"
+            " AM"
         }else{
-            "PM"
+            " PM"
         }
 
         // Display into screen
